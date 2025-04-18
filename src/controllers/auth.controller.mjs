@@ -14,7 +14,6 @@ const signUp = async (req, res) => {
     await user.save();
     res.status(201).json({
       message: "User created successfully",
-      user: user,
     });
   } catch (error) {
     console.error(error);
@@ -56,4 +55,21 @@ const login_user = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-export { signUp, login_user };
+
+const logout_user = async (req, res) => {
+  try {
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    };
+    return res
+      .status(200)
+      .clearCookie("Token", options)
+      .send({ message: "Logout successfull" });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+    console.log("Error", error);
+  }
+};
+export { signUp, login_user, logout_user };
