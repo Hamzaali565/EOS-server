@@ -22,4 +22,38 @@ const signUp = async (req, res) => {
   }
 };
 
-export { signUp };
+const login_user = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill in all fields" });
+    }
+    const user_check = await authModel.findOne({ email });
+    if (!user_check) return res.status(404).json({ message: "User not found" });
+    const isMatch = await user_check.checkPassword(password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Incorrect Password" });
+    const token = await user_check.generateToken();
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    };
+    res
+      .status(200)
+      .cookie("token", token, options)
+      .json({
+        message: "Login Successfully",
+        data: {
+          username: user_check.username,
+          role: user_check?.role,
+          email: user_check?.email,
+          token,
+        },
+      });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+export { signUp, login_user };

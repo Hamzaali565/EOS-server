@@ -6,6 +6,7 @@ const auth_schema = new Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  role: { type: String, enum: ["admin", "user"], default: "user" },
 });
 
 auth_schema.pre("save", async function (next) {
@@ -20,10 +21,7 @@ auth_schema.methods.generateToken = function () {
       username: this.username,
       email: this.email,
     },
-    process.env.SECRET,
-    {
-      expiresIn: null,
-    }
+    process.env.SECRET
   );
 };
 
