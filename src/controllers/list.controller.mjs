@@ -97,6 +97,11 @@ const update_many = async (req, res) => {
     if (newData.length !== 0) {
       const lists = await listModel.insertMany(newData, { ordered: false });
     }
+    if (oldData?.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "List Uploaded Successfully !!!" });
+    }
     // const ids = oldData.map((items) => items?._id);
     // const response = await listModel.updateMany({_id: {$in: ids}})
     const operation = oldData.map((items) => ({

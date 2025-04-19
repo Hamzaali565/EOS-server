@@ -29,6 +29,9 @@ const login_user = async (req, res) => {
     }
     const user_check = await authModel.findOne({ email });
     if (!user_check) return res.status(404).json({ message: "User not found" });
+    if (!user_check?.status) {
+      return res.status(400).json({ message: "User is not active" });
+    }
     const isMatch = await user_check.checkPassword(password);
     if (!isMatch)
       return res.status(400).json({ message: "Incorrect Password" });

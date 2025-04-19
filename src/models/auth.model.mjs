@@ -7,6 +7,10 @@ const auth_schema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["admin", "user"], default: "user" },
+  status: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 auth_schema.pre("save", async function (next) {
