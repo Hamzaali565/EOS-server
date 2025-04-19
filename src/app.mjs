@@ -11,6 +11,7 @@ app.use(
       "http://localhost:3000",
       "https://eos-ltd.com",
       "http://eos-ltd.com",
+      "https://landing-page-for-practice.vercel.app/",
     ],
   })
 );
