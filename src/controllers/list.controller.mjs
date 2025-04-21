@@ -89,7 +89,9 @@ const update_many = async (req, res) => {
         !items?.free_stock ||
         !items?.sales_price
     );
+
     if (empty_field) {
+      console.log("empty field", empty_field);
       return res.status(400).json({ message: "Please fill in all fields" });
     }
     const newData = data?.filter((items) => !items?._id);
@@ -102,8 +104,7 @@ const update_many = async (req, res) => {
         .status(200)
         .json({ message: "List Uploaded Successfully !!!" });
     }
-    // const ids = oldData.map((items) => items?._id);
-    // const response = await listModel.updateMany({_id: {$in: ids}})
+
     const operation = oldData.map((items) => ({
       updateOne: {
         filter: { _id: items._id },
