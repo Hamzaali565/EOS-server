@@ -59,6 +59,37 @@ const login_user = async (req, res) => {
   }
 };
 
+const in_active_users = async (_, res) => {
+  try {
+    const response = await authModel.find({ status: false }, "-password");
+    if (response.length === 0) {
+      return res.status(200).json({ message: "No inactive users" });
+    }
+    res.status(200).json({ message: "Inactive Users", data: response });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const acknowlege_user = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    if (!_id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    await authModel.findByIdAndUpdate(
+      { _id },
+      { $set: { status: true } },
+      { new: true }
+    );
+    res.status(202).json({ message: "User status updated successfully !!!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const logout_user = async (req, res) => {
   try {
     const options = {
@@ -75,4 +106,4 @@ const logout_user = async (req, res) => {
     console.log("Error", error);
   }
 };
-export { signUp, login_user, logout_user };
+export { signUp, login_user, logout_user, in_active_users, acknowlege_user };
