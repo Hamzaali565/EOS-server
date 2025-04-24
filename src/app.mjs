@@ -12,7 +12,7 @@ app.use(
       "http://localhost:3000",
       "https://eos-ltd.com",
       "http://eos-ltd.com",
-      // "https://www.eos-ltd.com",
+      "https://www.eos-ltd.com",
       "http://www.eos-ltd.com",
       "https://landing-page-for-practice.vercel.app",
     ],
