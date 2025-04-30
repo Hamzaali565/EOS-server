@@ -6,6 +6,7 @@ const listSchema = new Schema({
   manufacturer: { type: String, required: true },
   part_number: { type: String },
   sales_price: { type: String, required: true },
+  advantia_price: { type: String },
   free_stock: { type: Number, required: true },
   printer_model: { type: String },
 });
