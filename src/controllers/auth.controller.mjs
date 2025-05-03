@@ -36,10 +36,14 @@ const login_user = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Incorrect Password" });
     const token = await user_check.generateToken();
+    const isProduction = process.env.NODE_ENV === "production";
+
     const options = {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction, // Only use secure in production
+      sameSite: isProduction ? "none" : "lax", // Use 'lax' for development
+      path: "/", // Ensure cookie is available on all paths
+      maxAge: 24 * 60 * 60 * 1000, // Set expiration (1 day in this example)
     };
     res
       .status(200)
