@@ -106,4 +106,68 @@ const logout_user = async (req, res) => {
     console.log("Error", error);
   }
 };
-export { signUp, login_user, logout_user, in_active_users, acknowlege_user };
+
+const paginated_users = async (req, res) => {
+  try {
+    const { avoid } = req?.query;
+    console.log("avoid", avoid);
+
+    const response = await authModel
+      .find({ status: true }, "-password")
+      .limit(10)
+      .skip(avoid || 0);
+    if (response.length === 0) {
+      return res.status(404).json({ message: "Data not found !!!" });
+    }
+
+    res.status(201).json({ data: response });
+  } catch (error) {
+    console.log("Error =>", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+const update_visible_list = async (req, res) => {
+  try {
+    const { product_list, advantia_list, integra_list, _id } = req.body;
+    if (!_id) {
+      return res.status(404).json({ message: "Id is required" });
+    }
+    await authModel.findByIdAndUpdate(
+      { _id },
+      { $set: { product_list, advantia_list, integra_list } }
+    );
+    res.status(201).json({ message: "Document updated successfully !!!" });
+    return;
+  } catch (error) {
+    console.log("Error ==>", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+const spec_user = async (req, res) => {
+  try {
+    const find_user = await authModel.findOne(
+      { _id: req.user?._id },
+      "-password -role -email -status -createdAt -updatedAt"
+    );
+    if (!find_user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(201).json({ data: find_user });
+  } catch (error) {
+    console.log("error -->", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+export {
+  signUp,
+  login_user,
+  logout_user,
+  in_active_users,
+  acknowlege_user,
+  paginated_users,
+  update_visible_list,
+  spec_user,
+};

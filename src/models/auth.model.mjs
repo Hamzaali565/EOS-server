@@ -7,6 +7,9 @@ const auth_schema = new Schema(
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    product_list: { type: Boolean, default: true },
+    advantia_list: { type: Boolean, default: false },
+    integra_list: { type: Boolean, default: false },
     role: { type: String, enum: ["admin", "user"], default: "user" },
     status: {
       type: Boolean,
@@ -30,7 +33,10 @@ auth_schema.methods.generateToken = function () {
       username: this.username,
       email: this.email,
     },
-    process.env.SECRET
+    process.env.SECRET,
+    {
+      expiresIn: "1d",
+    }
   );
 };
 
