@@ -4,7 +4,6 @@ import { authModel } from "../models/auth.model.mjs";
 const admin_middleware = async (req, res, next) => {
   try {
     const token = req.cookies?.token;
-    console.log(token);
     if (!token) {
       return res.status(404).json({ message: "Invalid request !!!" });
     }
