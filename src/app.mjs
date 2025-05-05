@@ -8,19 +8,27 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://eos-ltd.com",
+//       "http://eos-ltd.com",
+//       "https://www.eos-ltd.com",
+//       "http://www.eos-ltd.com",
+//       "https://landing-page-for-practice.vercel.app",
+//     ],
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://eos-ltd.com",
-      "http://eos-ltd.com",
-      "https://www.eos-ltd.com",
-      "http://www.eos-ltd.com",
-      "https://landing-page-for-practice.vercel.app",
-    ],
+    origin: ["http://localhost:3000"],
     credentials: true,
   })
 );
+
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
 app.use(cookieParser());
