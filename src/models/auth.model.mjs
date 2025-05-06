@@ -33,10 +33,7 @@ auth_schema.methods.generateToken = function () {
       username: this.username,
       email: this.email,
     },
-    process.env.SECRET,
-    {
-      expiresIn: "1d",
-    }
+    process.env.SECRET
   );
 };
 

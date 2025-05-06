@@ -114,10 +114,9 @@ const logout_user = async (req, res) => {
 const paginated_users = async (req, res) => {
   try {
     const { avoid } = req?.query;
-    console.log("avoid", avoid);
 
     const response = await authModel
-      .find({ status: true }, "-password")
+      .find({}, "-password")
       .limit(10)
       .skip(avoid || 0);
     if (response.length === 0) {
@@ -133,13 +132,13 @@ const paginated_users = async (req, res) => {
 
 const update_visible_list = async (req, res) => {
   try {
-    const { product_list, advantia_list, integra_list, _id } = req.body;
+    const { product_list, advantia_list, integra_list, status, _id } = req.body;
     if (!_id) {
       return res.status(404).json({ message: "Id is required" });
     }
     await authModel.findByIdAndUpdate(
       { _id },
-      { $set: { product_list, advantia_list, integra_list } }
+      { $set: { product_list, advantia_list, integra_list, status } }
     );
     res.status(201).json({ message: "Document updated successfully !!!" });
     return;
