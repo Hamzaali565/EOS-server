@@ -10,6 +10,7 @@ const listSchema = new Schema({
   integra_price: { type: String },
   free_stock: { type: Number, required: true },
   printer_model: { type: String },
+  status: { type: Boolean, default: true }
 });
 
 const listModel = model("listModel", listSchema);
