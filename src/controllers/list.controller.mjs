@@ -91,25 +91,29 @@ const update_many = async (req, res) => {
     );
 
     if (empty_field) {
-      console.log("empty field", empty_field);
       return res.status(400).json({ message: "Please fill in all fields" });
     }
-    const newData = data?.filter((items) => !items?._id);
-    const oldData = data?.filter((items) => items?._id && items?.status !== 'false');
-    let delete_data = data?.filter((items) => items?.status === "false")
 
+    const mappedData = data.map((items) => ({
+      ...items,
+      status: items?.status === "true" ? true : false,
+    }));
+
+    const newData = mappedData?.filter((items) => !items?._id);
+    const oldData = mappedData?.filter(
+      (items) => items?._id && items?.status !== false
+    );
+    let delete_data = mappedData?.filter((items) => !items?.status);
     if (newData.length !== 0) {
-      const lists = await listModel.insertMany(newData, { ordered: false });
+      await listModel.insertMany(newData, { ordered: false });
     }
     if (delete_data.length !== 0) {
-      delete_data = delete_data.map((items) => items?._id)
-
+      delete_data = delete_data.map((items) => items?._id);
       await listModel.deleteMany({
         _id: {
-          $in: delete_data
-        }
-      })
-      console.log('delete_data', delete_data);
+          $in: delete_data,
+        },
+      });
     }
     if (oldData?.length === 0) {
       return res
