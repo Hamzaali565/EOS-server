@@ -96,7 +96,8 @@ const update_many = async (req, res) => {
 
     const mappedData = data.map((items) => ({
       ...items,
-      status: items?.status === "true" ? true : false,
+      status:
+        items?.status === "true" || items?.status === "TRUE" ? true : false,
     }));
 
     const newData = mappedData?.filter((items) => !items?._id);
