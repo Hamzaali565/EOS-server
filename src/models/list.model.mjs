@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 
 const listSchema = new Schema({
   code: { type: String, required: true },
+  integra_code: { type: String, },
   name: { type: String, required: true },
   manufacturer: { type: String, required: true },
   part_number: { type: String },
